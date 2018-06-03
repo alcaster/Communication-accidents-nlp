@@ -1,5 +1,6 @@
 # Database
 database/
+dumps/
 # Jetbrains
 .idea/
 # Temp vim files
