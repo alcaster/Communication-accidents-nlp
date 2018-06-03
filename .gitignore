@@ -1,0 +1,6 @@
+# Database
+database/
+# Jetbrains
+.idea/
+# Temp vim files
+*.swp
