@@ -1,0 +1,3 @@
+[submodule "scripts/Hive-downloader-selected-columns-day-by-day"]
+	path = scripts/Hive-downloader-selected-columns-day-by-day
+	url = https://github.com/alcaster/Hive-downloader-selected-columns-day-by-day
