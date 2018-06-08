@@ -2,7 +2,7 @@
 An application of tracking ztm history of communication accidents for course of nlp.
 ## Running
 ```bash
-docker compose up -d
+docker compose up
 ```
 ### Prerequisites
 - docker
@@ -12,11 +12,14 @@ docker compose up -d
 ## Initial setup
 
 #### Database
-To create local database for development.
+To create local database for development you need to import data.
 Only executed first time, data is persisted in database/data
 
 0. Download dump to ./dumps/
 1. Set up local db password in file [enviroments/dev/postgres_variables.env]
+```bash
+POSTGRES_PASSWORD=<HERE>
+```
 2. Launch postgres
 ```bash
 docker compose run postgres

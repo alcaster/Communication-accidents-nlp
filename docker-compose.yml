@@ -1,7 +1,19 @@
 version: "3"
 services:
-  postgres:
-    container_name: postgres
+  nlp_server:
+    container_name: server
+    build: src/
+    depends_on:
+      - postgres_db
+    env_file:
+      - ./enviroments/dev/postgres_variables.env
+    ports:
+      - "8000:8000"
+    volumes:
+     - ./src:/app
+
+  postgres_db:
+    container_name: database
     restart: always
     image: mdillon/postgis:latest
     env_file:

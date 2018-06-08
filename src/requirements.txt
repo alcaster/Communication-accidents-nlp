@@ -1,0 +1,6 @@
+Flask
+flask-restplus
+Psycopg2
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Script

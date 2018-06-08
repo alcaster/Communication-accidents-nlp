@@ -3,5 +3,6 @@ database/
 dumps/
 # Jetbrains
 .idea/
+__pycache__/
 # Temp vim files
 *.swp
