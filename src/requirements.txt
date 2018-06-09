@@ -1,6 +1,8 @@
-Flask
+piFlask
 flask-restplus
 Psycopg2
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Script
+googlemaps
+python-google-placesp
