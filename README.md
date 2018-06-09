@@ -36,3 +36,7 @@ CREATE DATABASE nlp TEMPLATE template_postgis;
 ```bash
 pg_restore -h localhost -p 5432 -U postgres -d nlp -v dumps/one_day.backup
 ```
+
+#### Server
+
+0. Add google api key to [enviroments/dev/enviroment_variables.env]

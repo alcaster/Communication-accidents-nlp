@@ -1,12 +1,18 @@
 import time
+from flask import current_app
+
 from googlemaps import Client as GoogleMaps
 from googleplaces import GooglePlaces, types, lang
 
 
 class GeoEncoder:
-    api_key = 'AIzaSyDxam1PakYQtTSfhOCdc-Bkwxh3GTL1P7M'
-    gmap = GoogleMaps(api_key)
-    places = GooglePlaces(api_key)
+
+    def __init__(self):
+        if current_app.config['GOOGLE_API_KEY'] == "":
+            raise Exception("No google api key in enviroment variable")
+        self.api_key = current_app.config['GOOGLE_API_KEY']
+        self.gmap = GoogleMaps(self.api_key)
+        self.places = GooglePlaces(self.api_key)
 
     def get_geo_coordinates(self, input_string, type_of_input, *args, **kwargs):
         radius = kwargs.get('radius', 1000)
