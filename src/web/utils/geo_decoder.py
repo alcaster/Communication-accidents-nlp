@@ -10,29 +10,31 @@ class GeoEncoder:
 
     def get_geo_coordinates(self, input_string, type_of_input, *args, **kwargs):
         radius = kwargs.get('radius', 1000)
+        city = kwargs.get('city', 'WARSZAWA')
         if str(type_of_input).lower() == 'bus_stop':
-            geocode = self.gmap.geocode(input_string + ', WARSZAWA')
+            geocode = self.gmap.geocode(input_string + ', ' + city)
             geo_dict = geocode[0]['geometry']['location']
             lat, lon = self.obtain_lat_lon_from_address(lat_lon_dict=geo_dict,
                                                    bus_stop_name=input_string,
                                                    radius=radius)
+            if lat == 0 and lon == 0: return print('Location for %s, %s not found' % (input_string, city))
             print('Location for %s is found at lat %f, lon %f' % (input_string, lat, lon))
             return lat, lon
         elif str(type_of_input).lower() == 'street':
-            geocode = self.gmap.geocode(input_string + ', WARSZAWA')
+            geocode = self.gmap.geocode(input_string + ', ' + city)
             lat_lon_dict = geocode[0]['geometry']['location']
             lat, lon = lat_lon_dict['lat'], lat_lon_dict['lng']
             print('Location for %s is found at lat %f, lon %f' % (input_string, lat, lon))
             return lat, lon
         else:
             print('Choose type bus_stop for bus stop name input or street for street name input')
-            return 0, 0
 
     def obtain_lat_lon_from_address(self, lat_lon_dict, bus_stop_name, radius):
 
         fetched = 0
 
-        query_result = self.places.nearby_search(language='POLISH',
+        query_result = self.places.nearby_search(
+                                            language='POLISH',
                                             lat_lng=lat_lon_dict,
                                             radius=radius,
                                             types=[types.TYPE_BUS_STATION,
@@ -55,3 +57,4 @@ class GeoEncoder:
                     print('[%i] %s stop was SELECTED' % (fetched, entry.name))
                     return entry.geo_location
             query_result = query_result_next_page
+        return 0, 0
