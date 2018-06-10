@@ -6,4 +6,5 @@ dumps/
 __pycache__/
 # Temp vim files
 *.swp
+
 venv/
