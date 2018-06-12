@@ -22,7 +22,7 @@ POSTGRES_PASSWORD=<HERE>
 ```
 2. Launch postgres
 ```bash
-docker compose run postgres
+docker-compose up postgres_db
 ```
 3. Connect to postgres and create database.
 ```bash
