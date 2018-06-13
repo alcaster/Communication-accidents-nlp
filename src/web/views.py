@@ -32,5 +32,5 @@ class TestGeoEncoder(Resource):
 class TestDbConnection(Resource):
     def get(self):
         db_extractor = DbExtractor()
-        test_result = DbExtractor.get_total_delay(1,2,3)
+        test_result = DbExtractor.get_total_delay(52.233407,21.116504,10)
         return {'result':test_result}
