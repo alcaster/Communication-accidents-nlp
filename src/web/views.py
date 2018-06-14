@@ -32,5 +32,13 @@ class TestGeoEncoder(Resource):
 class TestDbConnection(Resource):
     def get(self):
         db_extractor = DbExtractor()
-        test_result = DbExtractor.get_total_delay(52.233407,21.116504,10)
+        test_result = DbExtractor.get_total_delay(52.233407,21.116504,10, "2017-09-01")
         return {'result':test_result}
+
+@api.route('/get_data')
+class GetData(Resource):
+    def get(self, time_start, time_end, radius):
+        # Karol
+
+        #
+        return {'ping': 'pong'}
