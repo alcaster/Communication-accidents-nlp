@@ -7,4 +7,15 @@ document.addEventListener('DOMContentLoaded', function () {
         id: 'mapbox.streets',
         accessToken: 'TU WPISZ ACCESS TOKEN'
     }).addTo(map);
+
+    $('#mainForm').submit(function (ev) {
+        ev.preventDefault();
+        $.get("api/get_data", {
+            'fromDate': this.FromDate.value,
+            'toDate': this.ToDate.value,
+            'radius': this.Radius.value
+        }, function (data) {
+            alert(data.data)
+        });
+    });
 }, false);
