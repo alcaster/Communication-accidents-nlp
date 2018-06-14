@@ -14,6 +14,7 @@ class DbExtractor:
         # radius = "10"
         # date = "2017-09-01"
 
+        # right now, counts the number of delays. Default - AVG(dealy)
         open_sql = 'SELECT COUNT(time) FROM buses_clean_with_timetables_archived WHERE time=\'{}\'::date AND ST_DistanceSphere(ST_MakePoint(lon, lat), ST_MakePoint({}, {})) <= {};'
         sql = open_sql.format(date, lon, lat, radius)
         result = db.engine.execute(sql).scalar()
