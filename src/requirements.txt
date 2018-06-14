@@ -1,8 +1,8 @@
 Flask
 flask-restplus
-Psycopg2
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Script
 googlemaps
 python-google-places
+psycopg2-binary
