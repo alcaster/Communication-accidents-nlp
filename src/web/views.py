@@ -44,7 +44,6 @@ class GetData(Resource):
         parser.add_argument('radius', type=int, required=True)
         args = parser.parse_args()
 
-        print(args['radius'])
         # NER + DB MAGIC
-        data = 'sampleData'
+        data = args['radius']
         return {'data': data}
