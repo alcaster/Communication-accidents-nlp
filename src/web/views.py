@@ -20,6 +20,10 @@ class Ping(Resource):
     def get(self):
         return {'ping': 'pong'}
 
+@index_blueprint.route('/ula')
+def ula_test():
+    return render_template('file.html')
+
 
 @api.route('/test_geo_encoder')
 class TestGeoEncoder(Resource):
