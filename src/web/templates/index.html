@@ -1,7 +1,33 @@
 {% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+{% endblock %}
 {% block title %}This is an example page{% endblock %}
 
 {% block body %}
-<h1 class="important">Template Index</h1>
-<button type="button" class="btn" id="test">Basic</button>
+<h1>NLP APP</h1>
+<form name="mainForm" id="mainForm">
+    <div class="form-group">
+        <label for="FormControlFromDate">From Date</label>
+        <input type="date" class="form-control" name="FromDate" id="FormControlFromDate" value="2017-09-01">
+    </div>
+    <div class="form-group">
+        <label for="FormControlToDate">To Date</label>
+        <input type="date" class="form-control" name="ToDate" id="FormControlToDate" value="2017-09-01">
+    </div>
+    <div class="form-group">
+        <label for="FormControlRadius">Example multiple select</label>
+        <input type="number" class="form-control" name="Radius" id="FormControlRadius" value="10">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+<div id="mapid"></div>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+<!--<h1 class="important">Template Index</h1>-->
+<!--<button type="button" class="btn" id="test">Basic</button>-->
 {% endblock %}
