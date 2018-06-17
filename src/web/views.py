@@ -2,7 +2,7 @@ from flask import render_template, Blueprint
 from flask_restplus import Resource, Api, reqparse
 
 from web.utils.geo_decoder import GeoEncoder
-from web.utils.db_extractor import get_total_delay
+from web.utils.database_populator import AccidentParser
 
 api_blueprint = Blueprint('api', __name__, url_prefix='/api')
 index_blueprint = Blueprint('api_views', __name__, template_folder='templates')
@@ -23,6 +23,14 @@ class Ping(Resource):
 def ula_test():
     return render_template('file.html')
 
+@api.route('/populate')
+class Populate(Resource):
+    def get(self):
+        pupulator = AccidentParser('utils/ret.csv')
+        pupulator.create_accident_table()
+        pupulator.create_list_of_database_entries()
+        pupulator.populate_database()
+        return {'resopnse': 'population in progress'}
 
 @api.route('/test_geo_encoder')
 class TestGeoEncoder(Resource):
