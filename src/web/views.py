@@ -44,6 +44,7 @@ class GetData(Resource):
         parser.add_argument('radius', type=int, required=True)
         args = parser.parse_args()
 
+        data = get_total_delay(52.233407, 21.116504, 10, "2017-09-01")
         # NER + DB MAGIC
-        data = args['radius']
+        #data = 'sampleData'
         return {'data': data}

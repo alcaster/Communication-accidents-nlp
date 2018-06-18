@@ -5,7 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
         id: 'mapbox.streets',
-        accessToken: 'TU WPISZ ACCESS TOKEN'
+        accessToken: 'pk.eyJ1IjoiYWxjYXN0ZXIiLCJhIjoiY2ppZjJwMGd4MG96MTNwbzZ5ZXByenc4NyJ9.DU4_BDDy8X6SkkFD0p2Gsg'
+    }).addTo(map);
+
+    var circle = L.circle([52.22978, 21.01178], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 500
     }).addTo(map);
 
     $('#mainForm').submit(function (ev) {
