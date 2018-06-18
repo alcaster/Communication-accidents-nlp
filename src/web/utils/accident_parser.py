@@ -1,7 +1,7 @@
-
 import csv
 import datetime
 import psycopg2
+
 
 class Accident:
 
@@ -26,7 +26,8 @@ class AccidentParser:
         list_of_accident_entries = []
         with open(self.filename, 'rt') as file:
             reader = csv.reader(file, delimiter=' ')
-            for row in reader:
+            for i, row in enumerate(reader):
+                if i == 0: continue
                 start_date = row[0]
                 end_date = row[1]
                 s_day, s_month, s_year = start_date.split('.')
@@ -67,24 +68,28 @@ class AccidentParser:
         self.list_of_accidents = list_of_accident_entries
 
     def create_accident_table(self):
-        connection = psycopg2.connect(host="localhost",dbname='nlp', user='postgres', password='postgres')
+        conn = psycopg2.connect(host="localhost", dbname='nlp', user='postgres', password='password')
         cur = conn.cursor()
         cur.execute("""CREATE TABLE ACCIDENT(
-                START_DATE DATE() NOT NULL PRIMARY KEY,
-                END_DATE DATE() NOT NULL,
-                START_TIME_H VARCHAR(2) NOT NULL,
-                START_TIME_M VARCHAR(2) NOT NULL,
-                END_TIME_H VARCHAR(2) NOT NULL,
-                END_TIME_M VARCHAR(2) NOT NULL,
-                X DOUBLE  NOT NULL,
-                Y DOUBLE NOT NULL
+                START_DATE DATE NOT NULL,
+                END_DATE DATE NOT NULL,
+                START_TIME_H smallint NOT NULL,
+                START_TIME_M smallint NOT NULL,
+                END_TIME_H smallint NOT NULL,
+                END_TIME_M smallint NOT NULL,
+                X REAL  NOT NULL,
+                Y REAL NOT NULL
         )""")
+        conn.commit()
 
     def populate_database(self):
-        connection = psycopg2.connect(host="localhost",dbname='nlp', user='postgres', password='postgres')
+        connection = psycopg2.connect(host="localhost", dbname='nlp', user='postgres', password='password')
+        # connection.autocommit = True
         cur = connection.cursor()
-        sql = """INSERT INTO ACCIDENT (s_date, e_date,s_time_h, s_time_m, e_time_h, e_time_m,x,y) VALUES (%d, %date,%date,%s,%s,%s,%s,%f,%f )"""
-        for accident in self.list_of_accidents:
-            cur.execute(sql,(counter, accident.start_date, accident.end_date, accident.stat_time_hour,
-                             accident.start_time_min, accident.end_time_hour, accident.end_time_min, accident.x, accident.y))
-        connection.commit()
+        sql = """INSERT INTO ACCIDENT VALUES (\'{}\'::date,\'{}\'::date,{}::int2,{}::int2,{}::int2,{}::int2,{}::real,{}::real)"""
+        for counter, accident in enumerate(self.list_of_accidents):
+            cur.execute(
+                sql.format(accident.start_date.strftime("%Y-%m-%d"), accident.end_date.strftime("%Y-%m-%d"),
+                           accident.stat_time_hour, accident.start_time_min,
+                           accident.end_time_hour, accident.end_time_min, accident.x, accident.y))
+            connection.commit()
