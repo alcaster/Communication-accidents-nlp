@@ -16,11 +16,11 @@ services:
   postgres_db:
     container_name: database
     restart: always
-    build: database/
+    build: db/
     #image: mdillon/postgis:latest
     env_file:
       - ./enviroments/dev/postgres_variables.env
     volumes:
-      - ./database/data:/var/lib/postgresql/data
+      - ./volumes/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"

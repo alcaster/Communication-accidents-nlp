@@ -15,7 +15,7 @@ docker compose up
 To create local database for development you need to import data.
 Only executed first time, data is persisted in database/data
 
-0. Download dump to ./database/imports/
+0. Download dump to ./db/imports/
 
 #### Server
 
