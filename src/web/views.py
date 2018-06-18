@@ -19,6 +19,10 @@ class Ping(Resource):
     def get(self):
         return {'ping': 'pong'}
 
+@index_blueprint.route('/ula')
+def ula_test():
+    return render_template('file.html')
+
 
 @api.route('/test_geo_encoder')
 class TestGeoEncoder(Resource):
@@ -45,6 +49,7 @@ class GetData(Resource):
         args = parser.parse_args()
 
         print(args['radius'])
+        data = get_total_delay(52.233407, 21.116504, 10, "2017-09-01")
         # NER + DB MAGIC
-        data = 'sampleData'
+        #data = 'sampleData'
         return {'data': data}
