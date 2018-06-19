@@ -11,3 +11,10 @@ def get_total_delay(lon, lat, radius, date):
     result = db.engine.execute(sql).scalar()
 
     return result
+
+def get_points_in_range(start_date, end_date):
+    open_sql = 'SELECT * FROM accident WHERE start_date=\'{}\'::date AND end_date=\'{}\'::date;'
+    sql = open_sql.format(start_date, end_date)
+    result = db.engine.execute(sql)
+
+    return result
