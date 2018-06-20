@@ -6,22 +6,22 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
 {% endblock %}
-{% block title %}This is an example page{% endblock %}
+{% block title %}NLP APP{% endblock %}
 
 {% block body %}
 <h1>NLP APP</h1>
 <form name="mainForm" id="mainForm">
     <div class="form-group">
         <label for="FormControlFromDate">From Date</label>
-        <input type="date" class="form-control" name="FromDate" id="FormControlFromDate" value="2017-09-01">
+        <input type="date" class="form-control" name="FromDate" id="FormControlFromDate" value="2017-01-09">
     </div>
     <div class="form-group">
         <label for="FormControlToDate">To Date</label>
-        <input type="date" class="form-control" name="ToDate" id="FormControlToDate" value="2017-09-01">
+        <input type="date" class="form-control" name="ToDate" id="FormControlToDate" value="2017-01-09">
     </div>
     <div class="form-group">
-        <label for="FormControlRadius">Example multiple select</label>
-        <input type="number" class="form-control" name="Radius" id="FormControlRadius" value="10">
+        <label for="FormControlRadius">Radius</label>
+        <input type="number" class="form-control" name="Radius" id="FormControlRadius" value="50">
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
 </form>
