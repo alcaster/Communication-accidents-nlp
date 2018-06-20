@@ -33,10 +33,18 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 var x = data.data[i][0];
                 var y = data.data[i][1];
-                
+                var delay = data.data[i][2];
+                var color;
+
+                if(delay == 0) color = "RoyalBlue";
+                if(delay >= 1 && delay <= 15) color = 'green';
+                if(delay >= 16 && delay <= 30) color = 'yellow';
+                if(delay >= 31 && delay <= 60) color = 'DarkOrange';
+                if(delay >= 61) color = 'red';
+
                 var circle = L.circle([x, y], {
-                            color: 'red',
-                            fillColor: '#f03',
+                            color: color,
+                            fillColor: color,
                             fillOpacity: 0.5,
                             radius: radius,
                         }).addTo(map);
