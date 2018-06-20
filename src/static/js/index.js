@@ -47,8 +47,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             fillColor: color,
                             fillOpacity: 0.5,
                             radius: radius,
-                        }).addTo(map);
+                        }).addTo(map).bindPopup(delay.toString() + " sec");
             }
         });
     });
+
+
 }, false);
