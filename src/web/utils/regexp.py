@@ -1,10 +1,7 @@
 import csv
 import re
-import nltk
-import numpy
-import decimal
-from collections import OrderedDict
-from src.web.utils.geo_decoder import GeoEncoder
+from geo_decoder import GeoEncoder
+from sklearn.cluster import KMeans
 import itertools
 def remove_duplicates(values):
     output = list()
@@ -14,22 +11,26 @@ def remove_duplicates(values):
             output.append(value)
             seen.append(value)
     return output
-with open('ret.csv', 'w', newline='') as csvfilewrite:
+with open('ret.csv', 'a+', newline='') as csvfilewrite:
     spamwriter = csv.writer(csvfilewrite, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    spamwriter.writerow(["start date", "end date", "startHour", "endHour", "x", "y"])
+    # spamwriter.writerow(["start date", "end date", "startHour", "endHour", "x", "y"])
     with open('../../../data/ztm_newsfeed/ztmmessages.csv', newline='') as csvfileread:
         spamreader = csv.DictReader(csvfileread, delimiter='|', quotechar='"')
         'ĄĘŁŃÓŚŹŻ'
 
         ge = GeoEncoder()
-        i = 100
+        i = 5000
         for row in spamreader:
+            if i > 4200:
+                i = i - 1
+                continue
             i = i -1
             endOfString = str(row['content']).find('Inne zmiany')
             if endOfString > 0:
                 message = str(row['content'])[:endOfString]
             else:
                 message = str(row['content'])
+
             date = re.findall(r'(dn.|dniu|dnia|od|do) (\d{1}|\d{2})(.\d{2})(.\D|.\d{4})', message)
             hour = re.findall(r'(\d{2}:\d{2}| \d{1}:\d{2})', message)
             busStops = remove_duplicates(re.findall(r'([A-ZĄĘŁŃÓŚŹŻ][A-ZĄĘŁŃÓŚŹŻ.]+[A-ZĄĘŁŃÓŚŹŻ ]+)', message))
@@ -37,11 +38,12 @@ with open('ret.csv', 'w', newline='') as csvfilewrite:
             wkdStops = remove_duplicates(re.findall(r'(WKD [a-zA-ZĄĘŁŃÓŚŹŻąęłńóśżź]+)', message))
             metroStops = remove_duplicates(re.findall(r'(M. [a-zA-ZĄĘŁŃÓŚŹŻąęłńóśżź]+)', message))
             chStops = remove_duplicates(re.findall(r'(CH [a-zA-ZĄĘŁŃÓŚŹŻąęłńóśżź]+)', message))
-            streets = remove_duplicates(re.findall(r'(-|–)([^–,;:]+)', message))
+            streets = remove_duplicates(re.findall(r'(-|–)([^–,;:.]+)', message))
+            streets2 = remove_duplicates(re.findall(r'(ul|ulica|ulic|ulicy) ([^–,;:. ]+) ', message))
 
+            print (date, hour, busStops, pkpStops, wkdStops, metroStops, chStops, streets, streets2)
             startDate = ''
             endDate = ''
-
             if len(date) > 0:
                 startDate = ''
                 for s in date[0]:
@@ -85,7 +87,7 @@ with open('ret.csv', 'w', newline='') as csvfilewrite:
                     s.find('WKD') and s.find("M.") and s.find("ETAP") and s.find("TRAMWAJE") and s.find("LOTTO") and
                     s.find("SKM") and s.find("ZP ") and s.find("CH ") and s.find("ZW ") and s.find("EC ") and
                     s.find("ZTM") and s.find("PKT") and s.find("OBOWIĄZUJĄ TRASY") and s.find("AUTOBUSY") and s.find("KOMUNIKACJA") and
-                    s.find("PŁATNE" and s.find("ML "))) == -1:
+                    s.find("PŁATNE") and s.find("ML ")) == -1:
                         properBusStops.append(s)
             if 10 > len(properBusStops):
                 busStops = properBusStops
@@ -104,52 +106,45 @@ with open('ret.csv', 'w', newline='') as csvfilewrite:
                 except TypeError and IndexError:
                     print("wrong ret type")
             for s in busStops:
-                tmp = ge.get_geo_coordinates(s, "bus_stop")
                 try:
-
+                    tmp = ge.get_geo_coordinates(s, "bus_stop")
                     pointsForCluster.append([tmp[0], tmp[1]])
                 except TypeError:
                     print("wrong ret type")
 
             for s in pkpStops:
-                tmp = ge.get_geo_coordinates(s, "bus_stop")
                 try:
-
+                    tmp = ge.get_geo_coordinates(s, "street")
                     pointsForCluster.append([tmp[0], tmp[1]])
                 except TypeError:
                     print("wrong ret type")
             for s in chStops:
-                tmp = ge.get_geo_coordinates(s, "bus_stop")
                 try:
-
+                    tmp = ge.get_geo_coordinates(s, "street")
                     pointsForCluster.append([tmp[0], tmp[1]])
                 except TypeError:
                     print("wrong ret type")
             for s in metroStops:
-                tmp = ge.get_geo_coordinates(s, "bus_stop")
                 try:
-
+                    tmp = ge.get_geo_coordinates(s, "street")
                     pointsForCluster.append([tmp[0], tmp[1]])
                 except TypeError:
                     print("wrong ret type")
             for s in wkdStops:
-                tmp = ge.get_geo_coordinates(s, "bus_stop")
                 try:
-
+                    tmp = ge.get_geo_coordinates(s, "street")
                     pointsForCluster.append([tmp[0], tmp[1]])
                 except TypeError:
                     print("wrong ret type")
 
 
+            pointsForCluster = remove_duplicates(pointsForCluster)
+            if len(pointsForCluster) > 2:
+                est = KMeans(n_clusters=2)
+                est.fit(pointsForCluster)
+                pointsForCluster = est.cluster_centers_
             print(pointsForCluster)
-            for p in remove_duplicates(pointsForCluster):
+            for p in pointsForCluster:
                     spamwriter.writerow([startDate, endDate, startHour, endHour, p[0], p[1]])
-
-            print (i)
             if i < 1:
                break
-
-
-        print (i)
-
-
